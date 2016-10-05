@@ -1,0 +1,31 @@
+{
+  "name": "s-svg",
+  "version": "0.1.0",
+  "description": "A simple custom element in polymer, allowing SVG images to be styled with CSS.",
+  "authors": [
+    "The StartPolymer Project Authors (https://github.com/StartPolymer/authors)"
+  ],
+  "keywords": [
+    "web-components",
+    "polymer",
+    "svg",
+    "css"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.1.0"
+  },
+  "license": "https://github.com/StartPolymer/license",
+  "main": "s-svg.html",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/StartPolymer/s-svg.git"
+  },
+  "devDependencies": {
+    "paper-styles": "PolymerElements/paper-styles#^1.0.4",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "test-fixture": "polymerelements/test-fixture#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "ignore": []
+}

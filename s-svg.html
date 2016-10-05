@@ -1,0 +1,91 @@
+<!--
+@license
+Copyright (c) 2016 The StartPolymer Project Authors. All rights reserved.
+This code may only be used under the MIT License found at https://github.com/StartPolymer/license
+The complete set of authors may be found at https://github.com/StartPolymer/authors
+The complete set of contributors may be found at https://github.com/StartPolymer/contributors
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="s-svg">
+<template>
+
+<style>
+
+:host {
+  display: inline-block;
+}
+
+#svg {
+  width: 100%;
+  height: 100%;
+}
+
+</style>
+
+<svg id="svg"></svg>
+
+</template>
+<script>
+
+Polymer({
+
+  is: 's-svg',
+
+  properties: {
+    src: {
+      type: String,
+      value: null,
+      observer: '_srcChanged'
+    }
+  },
+
+  ready: function() {
+    this._getSource();
+  },
+
+  /**
+   * Get the image and displays it.
+   */
+  _getSource: function() {
+    // Get SVG file content.
+    if (this.src) {
+      var xhttp = new XMLHttpRequest();
+      var element = this.$.svg;
+      var self = this;
+      this._isSvgLoaded = false;
+      this._isSvgLoading = true;
+
+      xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+          var doc = new DOMParser().parseFromString(xhttp.responseText, 'application/xml');
+
+          // Remove previous image.
+          while (element.firstChild) {
+            element.removeChild(element.firstChild);
+          }
+
+          // Update the view.
+          element.appendChild(element.ownerDocument.importNode(doc.documentElement, true));
+
+          self.fire('s-svg-loaded');
+        }
+      };
+
+      xhttp.open('GET', this.src, true);
+      xhttp.send();
+    }
+  },
+
+  /**
+   * Observes any changes on the src propertie and apply the switch of image.
+   */
+  _srcChanged: function() {
+    this._getSource();
+  }
+
+});
+
+</script>
+</dom-module>
