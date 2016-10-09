@@ -17,14 +17,7 @@ The complete set of contributors may be found at https://github.com/StartPolymer
   display: inline-block;
 }
 
-#svg {
-  width: 100%;
-  height: 100%;
-}
-
 </style>
-
-<svg id="svg"></svg>
 
 </template>
 <script>
@@ -34,55 +27,77 @@ Polymer({
   is: 's-svg',
 
   properties: {
+    height: {
+      type: Number,
+      value: 24
+    },
+
+    /**
+     * Set to true to enable mirroring of SVG.
+     */
+    rtlMirroring: {
+      type: Boolean,
+      value: false
+    },
+
     src: {
       type: String,
-      value: null,
-      observer: '_srcChanged'
+      value: null
+    },
+
+    width: {
+      type: Number,
+      value: 24
     }
   },
 
-  ready: function() {
-    this._getSource();
-  },
+  observers: [
+    '_srcChanged(src, isAttached)'
+  ],
 
   /**
    * Get the image and displays it.
    */
-  _getSource: function() {
+  _srcChanged: function(src, isAttached) {
     // Get SVG file content.
-    if (this.src) {
-      var xhttp = new XMLHttpRequest();
-      var element = this.$.svg;
-      var self = this;
-      this._isSvgLoaded = false;
-      this._isSvgLoading = true;
+    if (src && isAttached) {
+      var xhr = new XMLHttpRequest();
 
-      xhttp.onreadystatechange = function() {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-          var doc = new DOMParser().parseFromString(xhttp.responseText, 'application/xml');
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          var responseText = xhr.responseText,
+              preserveAspectRatio = 'preserveAspectRatio="xMidYMid meet" ',
+              // TODO: `pointer-events: none` works around https://crbug.com/370136
+              // TODO: inline style may not be ideal, but avoids requiring a shadow-root
+              style = 'pointer-events: none; display: block; width: 100%; height: 100%;',
+              viewBox = 'viewBox="0 0 ' + this.width + ' ' + this.height + '" ',
+              xmlns = 'xmlns="http://www.w3.org/2000/svg" ';
 
-          // Remove previous image.
-          while (element.firstChild) {
-            element.removeChild(element.firstChild);
+          if (this.rtlMirroring) {
+            style += '-webkit-transform:scale(-1,1);transform:scale(-1,1);';
+          }
+
+          style += this.style.cssText;
+
+          // Set new SVG Attributes.
+          responseText = responseText.replace(/<svg[\s\S]*?>/i, '<svg ' + xmlns + viewBox + preserveAspectRatio + 'style="' + style + '">');
+          var svg = new DOMParser().parseFromString(responseText, 'application/xml').documentElement;
+
+          // Remove previous SVG.
+          if (Polymer.dom(this.root).firstChild) {
+            Polymer.dom(this.root).removeChild(Polymer.dom(this.root).firstChild);
           }
 
           // Update the view.
-          element.appendChild(element.ownerDocument.importNode(doc.documentElement, true));
+          Polymer.dom(this.root).appendChild(svg.cloneNode(true));
 
-          self.fire('s-svg-loaded');
+          this.fire('s-svg-load');
         }
-      };
+      }.bind(this);
 
-      xhttp.open('GET', this.src, true);
-      xhttp.send();
+      xhr.open('GET', src, true);
+      xhr.send();
     }
-  },
-
-  /**
-   * Observes any changes on the src propertie and apply the switch of image.
-   */
-  _srcChanged: function() {
-    this._getSource();
   }
 
 });
