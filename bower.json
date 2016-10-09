@@ -1,7 +1,7 @@
 {
   "name": "s-svg",
-  "version": "0.1.0",
-  "description": "A simple custom element in polymer, allowing SVG images to be styled with CSS.",
+  "version": "0.1.1",
+  "description": "A polymer element allowing SVG images to be responsive and styled with CSS.",
   "authors": [
     "The StartPolymer Project Authors (https://github.com/StartPolymer/authors)"
   ],
@@ -9,6 +9,7 @@
     "web-components",
     "polymer",
     "svg",
+    "responsive",
     "css"
   ],
   "dependencies": {
