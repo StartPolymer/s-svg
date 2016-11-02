@@ -34,3 +34,7 @@ Use optimized SVG. In Inkscape choose `Optimized SVG` file type upon `Save As` (
 ## Install
 
 `bower i s-svg -S`
+
+## License
+
+MIT: [StartPolymer/license](https://github.com/StartPolymer/license)
