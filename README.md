@@ -4,7 +4,7 @@ A polymer element allowing SVG images to be responsive and styled with CSS.
 
 ## Using
 
-Use optimized SVG. In Inkscape choose `Optimized SVG` file type upon `Save As` (Ctrl + Shift + S).
+Use optimized SVG. In Inkscape choose `Optimized SVG` file type upon `Save As` (Ctrl + Shift + S) and check `Enable viewboxing` in the Save As dialog.
 
 ```xml
 <svg height="50" viewBox="0 0 100 50" width="100" xmlns="http://www.w3.org/2000/svg">
