@@ -90,12 +90,12 @@ Polymer({
           var svg = new DOMParser().parseFromString(responseText, 'application/xml').documentElement;
 
           // Remove previous SVG.
-          if (Polymer.dom(this.root).firstChild) {
-            Polymer.dom(this.root).removeChild(Polymer.dom(this.root).firstChild);
+          if (this.$$('#svg')) {
+            Polymer.dom(this.root).removeChild(this.$$('#svg'));
           }
 
           // Update the view.
-          Polymer.dom(this.root).appendChild(svg.cloneNode(true));
+          Polymer.dom(this.root).appendChild(svg);
 
           this.fire('s-svg-load');
         }
